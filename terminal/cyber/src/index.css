@@ -1,0 +1,429 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   Cyber Terminal — Tailwind v4 theme
+   The neon-noir sibling. Midnight-blue night, electric cyan as primary signal,
+   hot magenta-pink as the rare hot accent. Wet-street haze + chromatic split.
+   Mirrors tokens.css 1:1 — every --cy-* variable is exposed as a Tailwind token.
+   ========================================================================== */
+
+@theme {
+  /* ---------- Colors: surfaces (deep blue-night, never pure black) ---------- */
+  --color-paper: #060c1a;
+  --color-paper-dim: #0a1428;
+  --color-term: #020610;
+  --color-term-paper: #0c1830;
+
+  /* ---------- Colors: ink (cool blue-tinted whites) ---------- */
+  --color-ink: #e6f2ff;
+  --color-ink-soft: #9fc0e6;
+  --color-mute: #4d6a8a;
+  --color-rule: #1c3050;
+
+  /* ---------- Colors: cyan ladder (primary signal) ---------- */
+  --color-bright: #00e7ff;
+  --color-bright-deep: #00b8d4;
+  --color-mid: #4dd0ff;
+  --color-soft: #1e6f8e;
+  --color-shadow: #0a2840;
+
+  /* ---------- Colors: hot ladder (rare — once per surface) ---------- */
+  --color-hot: #ff2d8f;
+  --color-hot-deep: #d61f73;
+  --color-hot-soft: #ff6fb0;
+
+  /* ---------- Type families ---------- */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* ---------- Type scale ---------- */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 3rem;
+  --text-4xl: 4.5rem;
+  --text-hero: 8rem;
+
+  --text-display: 132px;
+  --text-title: 72px;
+  --text-subtitle: 48px;
+  --text-body: 32px;
+  --text-small: 24px;
+  --text-kicker: 20px;
+
+  /* ---------- Type weights ---------- */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* ---------- Tracking ---------- */
+  --tracking-tight: -0.02em;
+  --tracking-normal: -0.01em;
+  --tracking-mono: 0.05em;
+  --tracking-kicker: 0.20em;
+
+  /* ---------- Spacing ---------- */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 16px;
+  --spacing-4: 24px;
+  --spacing-5: 32px;
+  --spacing-6: 48px;
+  --spacing-7: 64px;
+  --spacing-8: 96px;
+  --spacing-9: 120px;
+
+  /* ---------- Radius ---------- */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-dot: 999px;
+
+  /* ---------- Motion ---------- */
+  --ease-cy: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --duration-fast: 120ms;
+  --duration-cy: 180ms;
+  --duration-slow: 320ms;
+
+  /* ---------- Animations ---------- */
+  --animate-blink: cy-blink 1s steps(2) infinite;
+  --animate-flicker: cy-flicker 4s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   Cyber Terminal — base bindings (HTML element defaults)
+   ========================================================================== */
+
+@layer base {
+  :root {
+    /* Effect tokens — multi-value strings live as raw CSS vars. */
+    --cy-glow-bright: 0 0 12px rgba(0, 231, 255, 0.55),
+      0 0 24px rgba(0, 231, 255, 0.28),
+      0 0 48px rgba(0, 231, 255, 0.12);
+    --cy-glow-mid: 0 0 12px rgba(77, 208, 255, 0.4),
+      0 0 24px rgba(77, 208, 255, 0.15);
+    --cy-glow-soft: 0 0 10px rgba(30, 111, 142, 0.4);
+
+    --cy-glow-text-bright: 0 0 10px rgba(0, 231, 255, 0.7),
+      0 0 22px rgba(0, 231, 255, 0.3);
+    --cy-glow-text-mid: 0 0 10px rgba(77, 208, 255, 0.5);
+
+    /* Hot-pink halos — use sparingly. */
+    --cy-glow-hot: 0 0 14px rgba(255, 45, 143, 0.6),
+      0 0 28px rgba(255, 45, 143, 0.3),
+      0 0 52px rgba(255, 45, 143, 0.12);
+    --cy-glow-text-hot: 0 0 12px rgba(255, 45, 143, 0.7),
+      0 0 22px rgba(255, 45, 143, 0.3);
+
+    /* Two-color chromatic aberration: cyan + hot-pink ghosts. */
+    --cy-chroma-mc: 3px 0 0 rgba(0, 231, 255, 0.6),
+      -3px 0 0 rgba(255, 45, 143, 0.55);
+    --cy-chroma-heavy: 4px 0 0 rgba(0, 231, 255, 0.75),
+      -4px 0 0 rgba(255, 45, 143, 0.7);
+    --cy-chroma-soft: 2px 0 0 rgba(0, 231, 255, 0.4),
+      -2px 0 0 rgba(255, 45, 143, 0.35);
+
+    --cy-haze: radial-gradient(
+        ellipse 800px 500px at 20% 30%,
+        rgba(0, 231, 255, 0.08),
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 700px 400px at 80% 70%,
+        rgba(255, 45, 143, 0.05),
+        transparent 65%
+      );
+    --cy-grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.75' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0.7  0 0 0 0 1  0 0 0 0.10 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    --cy-vignette: radial-gradient(
+      ellipse at center,
+      transparent 50%,
+      rgba(0, 4, 16, 0.85) 100%
+    );
+    --cy-scanlines: repeating-linear-gradient(
+      0deg,
+      rgba(0, 231, 255, 0.04) 0,
+      rgba(0, 231, 255, 0.04) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  }
+
+  html {
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background: var(--color-paper);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    font-size: var(--text-base);
+    line-height: 1.55;
+    letter-spacing: var(--tracking-normal);
+    color: var(--color-ink);
+    background: var(--color-paper);
+  }
+
+  ::selection {
+    background: var(--color-bright);
+    color: var(--color-paper);
+  }
+
+  h1 {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-regular);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-ink);
+    margin: 0 0 var(--spacing-6);
+  }
+  h2 {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-regular);
+    font-size: clamp(1.75rem, 3.5vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-ink);
+    margin: 0 0 var(--spacing-5);
+  }
+  h3 {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-medium);
+    font-size: 1.5rem;
+    line-height: 1.25;
+    color: var(--color-ink);
+    margin: 0 0 var(--spacing-4);
+  }
+  h4 {
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--text-base);
+    letter-spacing: var(--tracking-kicker);
+    text-transform: uppercase;
+    color: var(--color-bright);
+    margin: 0 0 var(--spacing-3);
+  }
+
+  p {
+    font-size: var(--text-base);
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+    text-wrap: pretty;
+    margin: 0 0 var(--spacing-4);
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  small {
+    font-size: var(--text-sm);
+    color: var(--color-mute);
+  }
+  /* The hot-pink rule: <em> is the rare accent, not body emphasis. */
+  em {
+    font-style: italic;
+    color: var(--color-hot);
+    text-shadow: var(--cy-glow-text-hot);
+  }
+  strong {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-ink);
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--color-bright);
+    background: var(--color-term-paper);
+    padding: 0.1em 0.4em;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-rule);
+  }
+  pre {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+    background: var(--color-term);
+    padding: var(--spacing-5);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-rule);
+    overflow-x: auto;
+  }
+  pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  a {
+    color: var(--color-bright);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    transition: color var(--duration-cy) var(--ease-cy),
+      text-shadow var(--duration-cy) var(--ease-cy);
+  }
+  a:hover {
+    color: var(--color-bright);
+    text-shadow: var(--cy-glow-text-bright);
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--color-rule);
+    margin: var(--spacing-6) 0;
+  }
+}
+
+/* ==========================================================================
+   Cyber Terminal — effect utilities
+   Multi-value effects (gradients, multi-shadow, dataurl bg) exposed as @utility.
+   ========================================================================== */
+
+@utility cy-haze {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--cy-haze);
+}
+
+@utility cy-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--cy-grain);
+  opacity: 0.5;
+  mix-blend-mode: screen;
+}
+
+@utility cy-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--cy-scanlines);
+  mix-blend-mode: overlay;
+}
+
+@utility cy-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--cy-vignette);
+  mix-blend-mode: multiply;
+}
+
+@utility shadow-glow-bright {
+  box-shadow: var(--cy-glow-bright);
+}
+@utility shadow-glow-mid {
+  box-shadow: var(--cy-glow-mid);
+}
+@utility shadow-glow-soft {
+  box-shadow: var(--cy-glow-soft);
+}
+@utility shadow-glow-hot {
+  box-shadow: var(--cy-glow-hot);
+}
+
+/* Soft 6px halo for chrome dots. */
+@utility shadow-dot-glow {
+  box-shadow: 0 0 6px rgba(0, 231, 255, 0.55);
+}
+
+/* Outer cyan halo for terminal cards. */
+@utility shadow-term-bloom {
+  box-shadow: 0 0 30px rgba(0, 231, 255, 0.12);
+}
+
+/* Inset cyan edge bleed for quote cards. */
+@utility shadow-quote-bleed {
+  box-shadow: inset 3px 0 18px rgba(0, 231, 255, 0.18);
+}
+
+@utility text-glow-bright {
+  text-shadow: var(--cy-glow-text-bright);
+}
+@utility text-glow-mid {
+  text-shadow: var(--cy-glow-text-mid);
+}
+@utility text-glow-hot {
+  text-shadow: var(--cy-glow-text-hot);
+}
+
+@utility text-chroma {
+  text-shadow: var(--cy-chroma-mc);
+}
+@utility text-chroma-heavy {
+  text-shadow: var(--cy-chroma-heavy);
+}
+@utility text-chroma-soft {
+  text-shadow: var(--cy-chroma-soft);
+}
+
+/* Hero italic emphasis: cyan + halo + cyan/pink chromatic split. */
+@utility text-hero-em {
+  text-shadow:
+    0 0 32px rgba(0, 231, 255, 0.6),
+    4px 0 0 rgba(0, 231, 255, 0.7),
+    -4px 0 0 rgba(255, 45, 143, 0.7);
+}
+
+@utility text-display-em {
+  text-shadow:
+    0 0 24px rgba(0, 231, 255, 0.6),
+    4px 0 0 rgba(0, 231, 255, 0.7),
+    -4px 0 0 rgba(255, 45, 143, 0.7);
+}
+
+@utility text-logotype-em {
+  text-shadow:
+    0 0 20px rgba(255, 45, 143, 0.7),
+    2px 0 0 rgba(0, 231, 255, 0.6),
+    -2px 0 0 rgba(255, 45, 143, 0.6);
+}
+
+@utility text-section-n {
+  text-shadow: 0 0 10px rgba(0, 231, 255, 0.7),
+    0 0 22px rgba(0, 231, 255, 0.3);
+}
+
+@utility text-stat-n {
+  text-shadow: 0 0 14px rgba(0, 231, 255, 0.6);
+}
+
+/* ==========================================================================
+   Keyframes
+   ========================================================================== */
+
+@keyframes cy-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes cy-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 0.86;
+  }
+  94% {
+    opacity: 1;
+  }
+  97% {
+    opacity: 0.92;
+  }
+}

@@ -1,0 +1,370 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   Classic Arcade — Tailwind v4 theme
+   Coin-op CRT cabinet. Neon marquee glow. Scoreboards.
+   First sibling in the Arcade category.
+   Mirrors tokens.css 1:1 — every --ar-* variable is exposed as a Tailwind token.
+   ========================================================================== */
+
+@theme {
+  /* ---------- Colors: surfaces (cabinet black, never pure) ---------- */
+  --color-paper: #0a0410;
+  --color-paper-dim: #14081e;
+  --color-cabinet: #050208;
+  --color-felt: #1a0d28;
+
+  /* ---------- Colors: ink (CRT phosphor) ---------- */
+  --color-ink: #ffffff;
+  --color-ink-soft: #c4b8d8;
+  --color-mute: #6a5786;
+  --color-rule: #2a1842;
+
+  /* ---------- Colors: arcade neon palette ---------- */
+  --color-magenta: #ff2e8a;
+  --color-magenta-deep: #d61f73;
+  --color-cyan: #00f0ff;
+  --color-cyan-deep: #00bcd4;
+  --color-yellow: #ffe93d;
+  --color-yellow-deep: #d4be00;
+  --color-red: #ff2222;
+  --color-green: #2bff7a;
+  --color-purple: #b042ff;
+
+  /* ---------- Type families ---------- */
+  --font-pixel: 'Press Start 2P', ui-monospace, monospace;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* ---------- Type scale ---------- */
+  --text-marquee: 96px;
+  --text-display: 64px;
+  --text-title: 48px;
+  --text-subtitle: 32px;
+  --text-body: 18px;
+  --text-small: 14px;
+  --text-pixel: 16px;
+
+  /* ---------- Type weights ---------- */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* ---------- Tracking ---------- */
+  --tracking-tight: 0.02em;
+  --tracking-pixel: 0.08em;
+  --tracking-hud: 0.1em;
+  --tracking-kicker: 0.18em;
+
+  /* ---------- Spacing scale ---------- */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 16px;
+  --spacing-4: 24px;
+  --spacing-5: 32px;
+  --spacing-6: 48px;
+  --spacing-7: 64px;
+  --spacing-8: 96px;
+
+  /* ---------- Radius (arcade is square) ---------- */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-dot: 999px;
+
+  /* ---------- Motion ---------- */
+  --ease-ar: steps(4, end);
+  --ease-smooth: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --duration-fast: 100ms;
+  --duration-ar: 160ms;
+
+  /* ---------- Animations ---------- */
+  --animate-blink: ar-blink 1s steps(2) infinite;
+  --animate-flash: ar-flash 1.2s steps(2) infinite;
+  --animate-flash-fast: ar-flash 0.8s steps(2) infinite;
+  --animate-marquee-pulse: ar-marquee-pulse 1.6s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   Classic Arcade — base bindings (HTML element defaults from colors_and_type.css)
+   ========================================================================== */
+
+@layer base {
+  :root {
+    /* Effect tokens — kept as raw CSS vars (not Tailwind theme keys)
+       because they're multi-value box-shadow / background strings. */
+    --ar-glow-magenta: 0 0 12px rgba(255, 46, 138, 0.6),
+      0 0 28px rgba(255, 46, 138, 0.35),
+      0 0 56px rgba(255, 46, 138, 0.15);
+    --ar-glow-cyan: 0 0 12px rgba(0, 240, 255, 0.6),
+      0 0 28px rgba(0, 240, 255, 0.3),
+      0 0 56px rgba(0, 240, 255, 0.12);
+    --ar-glow-yellow: 0 0 12px rgba(255, 233, 61, 0.55),
+      0 0 24px rgba(255, 233, 61, 0.28);
+    --ar-glow-red: 0 0 14px rgba(255, 34, 34, 0.65),
+      0 0 28px rgba(255, 34, 34, 0.32);
+    --ar-glow-green: 0 0 12px rgba(43, 255, 122, 0.55),
+      0 0 24px rgba(43, 255, 122, 0.28);
+
+    --ar-glow-text-magenta: 0 0 8px rgba(255, 46, 138, 0.7),
+      0 0 18px rgba(255, 46, 138, 0.35);
+    --ar-glow-text-cyan: 0 0 8px rgba(0, 240, 255, 0.7),
+      0 0 18px rgba(0, 240, 255, 0.35);
+    --ar-glow-text-yellow: 0 0 8px rgba(255, 233, 61, 0.7),
+      0 0 18px rgba(255, 233, 61, 0.3);
+    --ar-glow-text-red: 0 0 8px rgba(255, 34, 34, 0.75),
+      0 0 16px rgba(255, 34, 34, 0.4);
+    --ar-glow-text-green: 0 0 8px rgba(43, 255, 122, 0.7),
+      0 0 16px rgba(43, 255, 122, 0.35);
+
+    --ar-scanlines: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.18) 0,
+      rgba(0, 0, 0, 0.18) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    --ar-scanlines-rgb: repeating-linear-gradient(
+      0deg,
+      rgba(255, 46, 138, 0.05) 0,
+      rgba(255, 46, 138, 0.05) 1px,
+      rgba(0, 240, 255, 0.04) 1px,
+      rgba(0, 240, 255, 0.04) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+    --ar-vignette: radial-gradient(
+      ellipse at center,
+      transparent 45%,
+      rgba(5, 2, 8, 0.85) 100%
+    );
+    --ar-bezel: radial-gradient(
+      ellipse at center,
+      transparent 90%,
+      rgba(0, 0, 0, 0.7) 100%
+    );
+  }
+
+  html {
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background: var(--color-paper);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    font-size: var(--text-body);
+    line-height: 1.5;
+    color: var(--color-ink);
+    background: var(--color-paper);
+  }
+
+  ::selection {
+    background: var(--color-magenta);
+    color: var(--color-ink);
+  }
+
+  h1 {
+    font-family: var(--font-pixel);
+    font-size: clamp(28px, 5vw, 56px);
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    color: var(--color-magenta);
+    text-shadow: var(--ar-glow-text-magenta);
+    margin: 0 0 var(--spacing-5);
+  }
+  h2 {
+    font-family: var(--font-pixel);
+    font-size: clamp(20px, 3vw, 32px);
+    line-height: 1.15;
+    color: var(--color-cyan);
+    text-shadow: var(--ar-glow-text-cyan);
+    margin: 0 0 var(--spacing-4);
+  }
+  h3 {
+    font-family: var(--font-pixel);
+    font-size: 18px;
+    color: var(--color-yellow);
+    text-shadow: var(--ar-glow-text-yellow);
+    margin: 0 0 var(--spacing-3);
+  }
+  h4 {
+    font-family: var(--font-pixel);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--color-cyan);
+    margin: 0 0 var(--spacing-3);
+  }
+
+  p {
+    font-size: var(--text-body);
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+    text-wrap: pretty;
+    margin: 0 0 var(--spacing-4);
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  small {
+    font-size: var(--text-small);
+    color: var(--color-mute);
+  }
+  em {
+    font-style: normal;
+    color: var(--color-yellow);
+    text-shadow: var(--ar-glow-text-yellow);
+    font-weight: 600;
+  }
+  strong {
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--color-cyan);
+    background: var(--color-cabinet);
+    padding: 0.1em 0.4em;
+    border: 1px solid var(--color-rule);
+  }
+  pre {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+    background: var(--color-cabinet);
+    padding: var(--spacing-4);
+    border: 2px solid var(--color-rule);
+    overflow-x: auto;
+  }
+
+  a {
+    color: var(--color-cyan);
+    text-decoration: none;
+    border-bottom: 2px solid currentColor;
+    transition: color var(--duration-ar) var(--ease-ar),
+      border-color var(--duration-ar) var(--ease-ar),
+      text-shadow var(--duration-ar) var(--ease-ar);
+  }
+  a:hover {
+    color: var(--color-magenta);
+    border-bottom-color: var(--color-magenta);
+    text-shadow: var(--ar-glow-text-magenta);
+  }
+
+  hr {
+    border: none;
+    border-top: 1px dashed var(--color-rule);
+    margin: var(--spacing-5) 0;
+  }
+}
+
+/* ==========================================================================
+   Classic Arcade — effect utilities
+   These are multi-value strings (gradients, multi-shadow) that don't fit
+   cleanly into Tailwind's @theme — exposed as @utility instead.
+   ========================================================================== */
+
+@utility ar-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--ar-scanlines);
+  mix-blend-mode: multiply;
+}
+
+@utility ar-scanlines-rgb {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--ar-scanlines-rgb);
+}
+
+@utility ar-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--ar-vignette);
+}
+
+@utility ar-bezel {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--ar-bezel);
+  mix-blend-mode: multiply;
+}
+
+/* ---------- Box-shadow glow utilities ---------- */
+@utility shadow-glow-magenta {
+  box-shadow: var(--ar-glow-magenta);
+}
+@utility shadow-glow-cyan {
+  box-shadow: var(--ar-glow-cyan);
+}
+@utility shadow-glow-yellow {
+  box-shadow: var(--ar-glow-yellow);
+}
+@utility shadow-glow-red {
+  box-shadow: var(--ar-glow-red);
+}
+@utility shadow-glow-green {
+  box-shadow: var(--ar-glow-green);
+}
+
+/* ---------- Text-shadow glow utilities ---------- */
+@utility text-glow-magenta {
+  text-shadow: var(--ar-glow-text-magenta);
+}
+@utility text-glow-cyan {
+  text-shadow: var(--ar-glow-text-cyan);
+}
+@utility text-glow-yellow {
+  text-shadow: var(--ar-glow-text-yellow);
+}
+@utility text-glow-red {
+  text-shadow: var(--ar-glow-text-red);
+}
+@utility text-glow-green {
+  text-shadow: var(--ar-glow-text-green);
+}
+
+/* The hero/title heaviest pulse — used for the index hero h1.
+   Mirrors index.html h1.hero text-shadow at peak brightness. */
+@utility text-marquee-pulse {
+  text-shadow:
+    0 0 12px rgba(255, 46, 138, 0.95),
+    0 0 30px rgba(255, 46, 138, 0.55),
+    0 0 50px rgba(255, 46, 138, 0.25);
+}
+
+/* ==========================================================================
+   Keyframes
+   ========================================================================== */
+
+@keyframes ar-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes ar-flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes ar-marquee-pulse {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(255, 46, 138, 0.7),
+      0 0 18px rgba(255, 46, 138, 0.35);
+  }
+  50% {
+    text-shadow: 0 0 12px rgba(255, 46, 138, 0.95),
+      0 0 30px rgba(255, 46, 138, 0.55),
+      0 0 50px rgba(255, 46, 138, 0.25);
+  }
+}

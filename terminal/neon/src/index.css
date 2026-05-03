@@ -1,0 +1,351 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   Neon Terminal — Tailwind v4 theme
+   Magenta-first, CRT-textured, mono-ornamented. Built for developer tools,
+   agent interfaces, and technical product surfaces.
+   Mirrors tokens.css 1:1 — every --nt-* variable is exposed as a Tailwind token.
+   ========================================================================== */
+
+@theme {
+  /* ---------- Colors: surfaces (deep plum, never true black except in term) ---------- */
+  --color-paper: #1a0a1f;
+  --color-paper-dim: #241030;
+  --color-term: #0a0614;
+  --color-term-paper: #120820;
+
+  /* ---------- Colors: ink (warm off-white with pink cast) ---------- */
+  --color-ink: #f4e8ff;
+  --color-ink-soft: #d9c8e8;
+  --color-mute: #8a6b99;
+  --color-rule: #3d1f4d;
+
+  /* ---------- Colors: accents ---------- */
+  --color-magenta: #ff2d78;
+  --color-magenta-deep: #c91e5e;
+  --color-cyan: #22e4ff;
+  --color-lime: #a8ff3e;
+  --color-violet: #6b2bb8;
+  --color-amber: #ffb347;
+  --color-red: #ff3355;
+
+  /* ---------- Type families ---------- */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* ---------- Type scale (matches neon-terminal exactly) ---------- */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 3rem;
+  --text-4xl: 4.5rem;
+  --text-hero: 8rem;
+
+  --text-display: 132px;
+  --text-title: 72px;
+  --text-subtitle: 48px;
+  --text-body: 32px;
+  --text-small: 24px;
+  --text-kicker: 20px;
+
+  /* ---------- Type weights ---------- */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* ---------- Tracking ---------- */
+  --tracking-tight: -0.02em;
+  --tracking-normal: -0.01em;
+  --tracking-mono: 0.05em;
+  --tracking-kicker: 0.20em;
+
+  /* ---------- Spacing scale (mirror of --nt-space-*) ---------- */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 16px;
+  --spacing-4: 24px;
+  --spacing-5: 32px;
+  --spacing-6: 48px;
+  --spacing-7: 64px;
+  --spacing-8: 96px;
+  --spacing-9: 120px;
+
+  /* ---------- Radius ---------- */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-dot: 999px;
+
+  /* ---------- Motion ---------- */
+  --ease-nt: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --duration-fast: 120ms;
+  --duration-nt: 180ms;
+  --duration-slow: 320ms;
+
+  /* ---------- Animations ---------- */
+  --animate-blink: nt-blink 1s steps(2) infinite;
+}
+
+/* ==========================================================================
+   Neon Terminal — base bindings (HTML element defaults)
+   ========================================================================== */
+
+@layer base {
+  :root {
+    /* Effect tokens — kept as raw CSS vars for multi-value strings. */
+    --nt-glow-magenta: 0 0 12px rgba(255, 45, 120, 0.55),
+      0 0 24px rgba(255, 45, 120, 0.25);
+    --nt-glow-cyan: 0 0 12px rgba(34, 228, 255, 0.55),
+      0 0 24px rgba(34, 228, 255, 0.25);
+    --nt-glow-lime: 0 0 12px rgba(168, 255, 62, 0.55),
+      0 0 24px rgba(168, 255, 62, 0.25);
+
+    --nt-glow-text-magenta: 0 0 10px #ff2d7888;
+    --nt-glow-text-cyan: 0 0 10px #22e4ff88;
+    --nt-glow-text-lime: 0 0 10px #a8ff3e88;
+
+    --nt-chroma-mc: 3px 0 0 #22e4ffaa, -3px 0 0 #a8ff3e88;
+    --nt-chroma-heavy: 4px 0 0 #22e4ffaa, -4px 0 0 #a8ff3eaa;
+    --nt-chroma-soft: 2px 0 0 #22e4ff66, -2px 0 0 #a8ff3e55;
+
+    --nt-scanlines: repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.035) 0,
+      rgba(255, 255, 255, 0.035) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    --nt-vignette: radial-gradient(
+      ellipse at center,
+      transparent 55%,
+      rgba(0, 0, 0, 0.45) 100%
+    );
+  }
+
+  html {
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background: var(--color-paper);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    font-size: var(--text-base);
+    line-height: 1.55;
+    letter-spacing: var(--tracking-normal);
+    color: var(--color-ink);
+    background: var(--color-paper);
+  }
+
+  ::selection {
+    background: var(--color-magenta);
+    color: var(--color-paper);
+  }
+
+  h1 {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-regular);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-ink);
+    margin: 0 0 var(--spacing-6);
+  }
+  h2 {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-regular);
+    font-size: clamp(1.75rem, 3.5vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-ink);
+    margin: 0 0 var(--spacing-5);
+  }
+  h3 {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-medium);
+    font-size: 1.5rem;
+    line-height: 1.25;
+    color: var(--color-ink);
+    margin: 0 0 var(--spacing-4);
+  }
+  h4 {
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--text-base);
+    letter-spacing: var(--tracking-kicker);
+    text-transform: uppercase;
+    color: var(--color-magenta);
+    margin: 0 0 var(--spacing-3);
+  }
+
+  p {
+    font-size: var(--text-base);
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+    text-wrap: pretty;
+    margin: 0 0 var(--spacing-4);
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  small {
+    font-size: var(--text-sm);
+    color: var(--color-mute);
+  }
+  em {
+    font-style: italic;
+    color: var(--color-cyan);
+  }
+  strong {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-ink);
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--color-lime);
+    background: var(--color-term);
+    padding: 0.1em 0.4em;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-rule);
+  }
+  pre {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+    background: var(--color-term);
+    padding: var(--spacing-5);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-rule);
+    overflow-x: auto;
+  }
+  pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  a {
+    color: var(--color-cyan);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    transition: color var(--duration-nt) var(--ease-nt),
+      text-shadow var(--duration-nt) var(--ease-nt);
+  }
+  a:hover {
+    color: var(--color-magenta);
+    text-shadow: var(--nt-glow-text-magenta);
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--color-rule);
+    margin: var(--spacing-6) 0;
+  }
+}
+
+/* ==========================================================================
+   Neon Terminal — effect utilities
+   Multi-value effects (gradients, multi-shadow) exposed as @utility.
+   ========================================================================== */
+
+@utility nt-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--nt-scanlines);
+  mix-blend-mode: overlay;
+}
+
+@utility nt-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--nt-vignette);
+  mix-blend-mode: multiply;
+}
+
+@utility shadow-glow-magenta {
+  box-shadow: var(--nt-glow-magenta);
+}
+@utility shadow-glow-cyan {
+  box-shadow: var(--nt-glow-cyan);
+}
+@utility shadow-glow-lime {
+  box-shadow: var(--nt-glow-lime);
+}
+
+@utility text-glow-magenta {
+  text-shadow: var(--nt-glow-text-magenta);
+}
+@utility text-glow-cyan {
+  text-shadow: var(--nt-glow-text-cyan);
+}
+@utility text-glow-lime {
+  text-shadow: var(--nt-glow-text-lime);
+}
+
+@utility text-chroma {
+  text-shadow: var(--nt-chroma-mc);
+}
+@utility text-chroma-heavy {
+  text-shadow: var(--nt-chroma-heavy);
+}
+@utility text-chroma-soft {
+  text-shadow: var(--nt-chroma-soft);
+}
+
+/* The hero/title italic emphasis: magenta + halo + heavy chromatic.
+   Used for <em> inside hero and display titles. */
+@utility text-hero-em {
+  text-shadow:
+    0 0 32px rgba(255, 45, 120, 0.6),
+    4px 0 0 rgba(34, 228, 255, 0.7),
+    -4px 0 0 rgba(168, 255, 62, 0.6);
+}
+
+@utility text-display-em {
+  text-shadow:
+    0 0 24px rgba(255, 45, 120, 0.5),
+    3px 0 0 rgba(34, 228, 255, 0.55),
+    -3px 0 0 rgba(168, 255, 62, 0.45);
+}
+
+@utility text-logotype-em {
+  text-shadow:
+    0 0 20px rgba(255, 45, 120, 0.55),
+    2px 0 0 rgba(34, 228, 255, 0.55),
+    -2px 0 0 rgba(168, 255, 62, 0.45);
+}
+
+@utility text-section-n {
+  text-shadow: 0 0 8px rgba(255, 45, 120, 0.4);
+}
+
+@utility text-stat-n {
+  text-shadow: 0 0 14px rgba(255, 45, 120, 0.35);
+}
+
+/* ==========================================================================
+   Keyframes
+   ========================================================================== */
+
+@keyframes nt-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}

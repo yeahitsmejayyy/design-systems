@@ -1,0 +1,387 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   Neo Terminal — Tailwind v4 theme
+   The phosphor-green sibling. Pure black, strict monochrome green, no rain,
+   no scanlines — just chromatic green ghosts and binary as ornament.
+   Mirrors tokens.css 1:1 — every --mx-* variable is exposed as a Tailwind token.
+   ========================================================================== */
+
+@theme {
+  /* ---------- Colors: surfaces (pure black) ---------- */
+  --color-paper: #000000;
+  --color-paper-dim: #050805;
+  --color-term: #000000;
+  --color-term-paper: #0a0f0a;
+
+  /* ---------- Colors: ink (green ladder, no neutrals) ---------- */
+  --color-ink: #b8ffb8;
+  --color-ink-soft: #6dcc6d;
+  --color-mute: #2f6b2f;
+  --color-rule: #133813;
+
+  /* ---------- Colors: accents (luminance ladder of phosphor green) ---------- */
+  --color-bright: #00ff41;
+  --color-bright-deep: #00d738;
+  --color-mid: #4cff7a;
+  --color-soft: #128c2c;
+  --color-shadow: #0a3812;
+  --color-warn: #8aff8a;
+  --color-error: #00ff41;
+
+  /* ---------- Type families ---------- */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* ---------- Type scale (matches neo-terminal exactly) ---------- */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 3rem;
+  --text-4xl: 4.5rem;
+  --text-hero: 8rem;
+
+  --text-display: 132px;
+  --text-title: 72px;
+  --text-subtitle: 48px;
+  --text-body: 32px;
+  --text-small: 24px;
+  --text-kicker: 20px;
+
+  /* ---------- Type weights ---------- */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* ---------- Tracking ---------- */
+  --tracking-tight: -0.02em;
+  --tracking-normal: -0.01em;
+  --tracking-mono: 0.05em;
+  --tracking-kicker: 0.20em;
+
+  /* ---------- Spacing ---------- */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 16px;
+  --spacing-4: 24px;
+  --spacing-5: 32px;
+  --spacing-6: 48px;
+  --spacing-7: 64px;
+  --spacing-8: 96px;
+  --spacing-9: 120px;
+
+  /* ---------- Radius ---------- */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-dot: 999px;
+
+  /* ---------- Motion ---------- */
+  --ease-mx: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --duration-fast: 120ms;
+  --duration-mx: 180ms;
+  --duration-slow: 320ms;
+
+  /* ---------- Animations ---------- */
+  --animate-blink: mx-blink 1s steps(2) infinite;
+  --animate-flicker: mx-flicker 4s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   Neo Terminal — base bindings (HTML element defaults)
+   ========================================================================== */
+
+@layer base {
+  :root {
+    /* Effect tokens — multi-value strings live as raw CSS vars. */
+    --mx-glow-bright: 0 0 12px rgba(0, 255, 65, 0.55),
+      0 0 24px rgba(0, 255, 65, 0.25), 0 0 48px rgba(0, 255, 65, 0.10);
+    --mx-glow-mid: 0 0 12px rgba(76, 255, 122, 0.4),
+      0 0 24px rgba(76, 255, 122, 0.15);
+    --mx-glow-soft: 0 0 10px rgba(18, 140, 44, 0.35);
+
+    --mx-glow-text-bright: 0 0 10px rgba(0, 255, 65, 0.65),
+      0 0 20px rgba(0, 255, 65, 0.25);
+    --mx-glow-text-mid: 0 0 10px rgba(76, 255, 122, 0.45);
+    --mx-glow-text-deep: 0 0 14px rgba(0, 255, 65, 0.5);
+
+    /* Chromatic aberration: bright phosphor + deep-green ghosts */
+    --mx-chroma-mc: 3px 0 0 rgba(0, 255, 65, 0.55),
+      -3px 0 0 rgba(10, 56, 18, 0.85);
+    --mx-chroma-heavy: 4px 0 0 rgba(0, 255, 65, 0.7),
+      -4px 0 0 rgba(10, 56, 18, 0.9);
+    --mx-chroma-soft: 2px 0 0 rgba(0, 255, 65, 0.4),
+      -2px 0 0 rgba(10, 56, 18, 0.7);
+
+    --mx-vignette: radial-gradient(
+      ellipse at center,
+      transparent 50%,
+      rgba(0, 0, 0, 0.85) 100%
+    );
+
+    /* Binary noise — phosphor-green grain (replaces scanlines/rain) */
+    --mx-binary-grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 1  0 0 0 0 0.25  0 0 0 0.14 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  html {
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background: var(--color-paper);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    font-size: var(--text-base);
+    line-height: 1.55;
+    letter-spacing: var(--tracking-normal);
+    color: var(--color-ink);
+    background: var(--color-paper);
+  }
+
+  ::selection {
+    background: var(--color-bright);
+    color: var(--color-paper);
+  }
+
+  h1 {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-regular);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-ink);
+    margin: 0 0 var(--spacing-6);
+  }
+  h2 {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-regular);
+    font-size: clamp(1.75rem, 3.5vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-ink);
+    margin: 0 0 var(--spacing-5);
+  }
+  h3 {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-medium);
+    font-size: 1.5rem;
+    line-height: 1.25;
+    color: var(--color-ink);
+    margin: 0 0 var(--spacing-4);
+  }
+  h4 {
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--text-base);
+    letter-spacing: var(--tracking-kicker);
+    text-transform: uppercase;
+    color: var(--color-bright);
+    margin: 0 0 var(--spacing-3);
+  }
+
+  p {
+    font-size: var(--text-base);
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+    text-wrap: pretty;
+    margin: 0 0 var(--spacing-4);
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  small {
+    font-size: var(--text-sm);
+    color: var(--color-mute);
+  }
+  em {
+    font-style: italic;
+    color: var(--color-bright);
+  }
+  strong {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-ink);
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--color-bright);
+    background: var(--color-term-paper);
+    padding: 0.1em 0.4em;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-rule);
+  }
+  pre {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+    background: var(--color-term);
+    padding: var(--spacing-5);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-rule);
+    overflow-x: auto;
+  }
+  pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  a {
+    color: var(--color-bright);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    transition: color var(--duration-mx) var(--ease-mx),
+      text-shadow var(--duration-mx) var(--ease-mx);
+  }
+  a:hover {
+    color: var(--color-bright);
+    text-shadow: var(--mx-glow-text-bright);
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--color-rule);
+    margin: var(--spacing-6) 0;
+  }
+}
+
+/* ==========================================================================
+   Neo Terminal — effect utilities
+   Multi-value effects (gradients, multi-shadow, dataurl bg) exposed as @utility.
+   ========================================================================== */
+
+@utility mx-binary-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--mx-binary-grain);
+  opacity: 0.6;
+  mix-blend-mode: screen;
+}
+
+@utility mx-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--mx-vignette);
+  mix-blend-mode: multiply;
+}
+
+@utility shadow-glow-bright {
+  box-shadow: var(--mx-glow-bright);
+}
+@utility shadow-glow-mid {
+  box-shadow: var(--mx-glow-mid);
+}
+@utility shadow-glow-soft {
+  box-shadow: var(--mx-glow-soft);
+}
+
+/* Small chrome-dot phosphor glow — softer than the full bloom. */
+@utility shadow-dot-glow {
+  box-shadow: 0 0 6px rgba(0, 255, 65, 0.5);
+}
+
+/* Outer phosphor halo for terminal cards / containers. */
+@utility shadow-term-bloom {
+  box-shadow: 0 0 30px rgba(0, 255, 65, 0.08);
+}
+
+/* Inset phosphor edge glow for quote cards (3px left edge bleed). */
+@utility shadow-quote-bleed {
+  box-shadow: inset 3px 0 18px rgba(0, 255, 65, 0.15);
+}
+
+@utility text-glow-bright {
+  text-shadow: var(--mx-glow-text-bright);
+}
+@utility text-glow-mid {
+  text-shadow: var(--mx-glow-text-mid);
+}
+
+@utility text-chroma {
+  text-shadow: var(--mx-chroma-mc);
+}
+@utility text-chroma-heavy {
+  text-shadow: var(--mx-chroma-heavy);
+}
+@utility text-chroma-soft {
+  text-shadow: var(--mx-chroma-soft);
+}
+
+/* Hero italic emphasis: phosphor + heavy halo + green-ghost chroma. */
+@utility text-hero-em {
+  text-shadow:
+    0 0 32px rgba(0, 255, 65, 0.6),
+    4px 0 0 rgba(0, 255, 65, 0.7),
+    -4px 0 0 rgba(10, 56, 18, 0.9);
+}
+
+@utility text-display-em {
+  text-shadow:
+    0 0 24px rgba(0, 255, 65, 0.6),
+    3px 0 0 rgba(0, 255, 65, 0.55),
+    -3px 0 0 rgba(10, 56, 18, 0.85);
+}
+
+@utility text-logotype-em {
+  text-shadow:
+    0 0 20px rgba(0, 255, 65, 0.6),
+    2px 0 0 rgba(0, 255, 65, 0.55),
+    -2px 0 0 rgba(10, 56, 18, 0.85);
+}
+
+@utility text-section-n {
+  text-shadow: 0 0 10px rgba(0, 255, 65, 0.65),
+    0 0 20px rgba(0, 255, 65, 0.25);
+}
+
+@utility text-stat-n {
+  text-shadow: 0 0 14px rgba(0, 255, 65, 0.5);
+}
+
+/* ==========================================================================
+   Keyframes
+   ========================================================================== */
+
+@keyframes mx-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes mx-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  93% {
+    opacity: 0.85;
+  }
+  94% {
+    opacity: 1;
+  }
+  97% {
+    opacity: 0.92;
+  }
+  98% {
+    opacity: 1;
+  }
+}

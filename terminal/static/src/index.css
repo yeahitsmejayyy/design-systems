@@ -1,0 +1,359 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   Static Terminal — Tailwind v4 theme
+   The grayscale sibling of Neon Terminal. All hue stripped, contrast preserved.
+   Mirrors tokens.css 1:1 — every --st-* variable is exposed as a Tailwind token.
+   ========================================================================== */
+
+@theme {
+  /* ---------- Colors: surfaces ---------- */
+  --color-paper: #15151a;
+  --color-paper-dim: #1d1d22;
+  --color-term: #08080b;
+  --color-term-paper: #101015;
+
+  /* ---------- Colors: ink ---------- */
+  --color-ink: #f4f4f6;
+  --color-ink-soft: #c8c8cd;
+  --color-mute: #75757d;
+  --color-rule: #2a2a30;
+
+  /* ---------- Colors: accents (luminance-only) ---------- */
+  --color-bright: #ffffff;
+  --color-bright-deep: #e2e2e6;
+  --color-mid: #9a9aa2;
+  --color-soft: #5a5a62;
+  --color-shadow: #2f2f36;
+  --color-warn: #b8b8be;
+  --color-error: #d8d8dc;
+
+  /* ---------- Type families ---------- */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* ---------- Type scale (matches static-terminal exactly) ---------- */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 3rem;
+  --text-4xl: 4.5rem;
+  --text-hero: 8rem;
+
+  --text-display: 132px;
+  --text-title: 72px;
+  --text-subtitle: 48px;
+  --text-body: 32px;
+  --text-small: 24px;
+  --text-kicker: 20px;
+
+  /* ---------- Type weights ---------- */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* ---------- Tracking ---------- */
+  --tracking-tight: -0.02em;
+  --tracking-normal: -0.01em;
+  --tracking-mono: 0.05em;
+  --tracking-kicker: 0.20em;
+
+  /* ---------- Spacing scale (mirror of --st-space-*) ---------- */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 16px;
+  --spacing-4: 24px;
+  --spacing-5: 32px;
+  --spacing-6: 48px;
+  --spacing-7: 64px;
+  --spacing-8: 96px;
+  --spacing-9: 120px;
+
+  /* ---------- Radius ---------- */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-dot: 999px;
+
+  /* ---------- Motion ---------- */
+  --ease-st: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --duration-fast: 120ms;
+  --duration-st: 180ms;
+  --duration-slow: 320ms;
+
+  /* ---------- Animations ---------- */
+  --animate-blink: st-blink 1s steps(2) infinite;
+}
+
+/* ==========================================================================
+   Static Terminal — base bindings (HTML element defaults from colors_and_type.css)
+   ========================================================================== */
+
+@layer base {
+  :root {
+    /* Effect tokens — kept as raw CSS vars (not Tailwind theme keys)
+       because they're multi-value box-shadow / background strings. */
+    --st-glow-bright: 0 0 12px rgba(255, 255, 255, 0.45),
+      0 0 24px rgba(255, 255, 255, 0.18);
+    --st-glow-mid: 0 0 12px rgba(200, 200, 205, 0.35),
+      0 0 24px rgba(200, 200, 205, 0.12);
+    --st-glow-soft: 0 0 10px rgba(150, 150, 158, 0.30);
+    --st-glow-text-bright: 0 0 10px rgba(255, 255, 255, 0.55);
+    --st-glow-text-mid: 0 0 10px rgba(200, 200, 205, 0.4);
+
+    --st-chroma-mc: 3px 0 0 rgba(220, 220, 225, 0.55),
+      -3px 0 0 rgba(120, 120, 128, 0.45);
+    --st-chroma-heavy: 4px 0 0 rgba(220, 220, 225, 0.7),
+      -4px 0 0 rgba(120, 120, 128, 0.6);
+    --st-chroma-soft: 2px 0 0 rgba(220, 220, 225, 0.35),
+      -2px 0 0 rgba(120, 120, 128, 0.25);
+
+    --st-scanlines: repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.04) 0,
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    --st-vignette: radial-gradient(
+      ellipse at center,
+      transparent 55%,
+      rgba(0, 0, 0, 0.55) 100%
+    );
+    --st-grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  html {
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background: var(--color-paper);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    font-size: var(--text-base);
+    line-height: 1.55;
+    letter-spacing: var(--tracking-normal);
+    color: var(--color-ink);
+    background: var(--color-paper);
+  }
+
+  ::selection {
+    background: var(--color-bright);
+    color: var(--color-paper);
+  }
+
+  h1 {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-regular);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-ink);
+    margin: 0 0 var(--spacing-6);
+  }
+  h2 {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-regular);
+    font-size: clamp(1.75rem, 3.5vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-ink);
+    margin: 0 0 var(--spacing-5);
+  }
+  h3 {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-medium);
+    font-size: 1.5rem;
+    line-height: 1.25;
+    color: var(--color-ink);
+    margin: 0 0 var(--spacing-4);
+  }
+  h4 {
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--text-base);
+    letter-spacing: var(--tracking-kicker);
+    text-transform: uppercase;
+    color: var(--color-bright);
+    margin: 0 0 var(--spacing-3);
+  }
+
+  p {
+    font-size: var(--text-base);
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+    text-wrap: pretty;
+    margin: 0 0 var(--spacing-4);
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  small {
+    font-size: var(--text-sm);
+    color: var(--color-mute);
+  }
+  em {
+    font-style: italic;
+    color: var(--color-bright);
+  }
+  strong {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-ink);
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--color-bright);
+    background: var(--color-term);
+    padding: 0.1em 0.4em;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-rule);
+  }
+  pre {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+    background: var(--color-term);
+    padding: var(--spacing-5);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-rule);
+    overflow-x: auto;
+  }
+  pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  a {
+    color: var(--color-bright);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    transition: color var(--duration-st) var(--ease-st),
+      text-shadow var(--duration-st) var(--ease-st);
+  }
+  a:hover {
+    color: var(--color-bright);
+    text-shadow: var(--st-glow-text-bright);
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--color-rule);
+    margin: var(--spacing-6) 0;
+  }
+}
+
+/* ==========================================================================
+   Static Terminal — effect utilities
+   These are multi-value strings (gradients, multi-shadow, dataurl bg) that
+   don't fit cleanly into Tailwind's @theme — exposed as @utility instead.
+   ========================================================================== */
+
+@utility st-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--st-grain);
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+}
+
+@utility st-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--st-scanlines);
+  mix-blend-mode: overlay;
+}
+
+@utility st-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--st-vignette);
+  mix-blend-mode: multiply;
+}
+
+@utility shadow-glow-bright {
+  box-shadow: var(--st-glow-bright);
+}
+@utility shadow-glow-mid {
+  box-shadow: var(--st-glow-mid);
+}
+@utility shadow-glow-soft {
+  box-shadow: var(--st-glow-soft);
+}
+
+@utility text-glow-bright {
+  text-shadow: var(--st-glow-text-bright);
+}
+@utility text-glow-mid {
+  text-shadow: var(--st-glow-text-mid);
+}
+
+@utility text-chroma {
+  text-shadow: var(--st-chroma-mc);
+}
+@utility text-chroma-heavy {
+  text-shadow: var(--st-chroma-heavy);
+}
+@utility text-chroma-soft {
+  text-shadow: var(--st-chroma-soft);
+}
+
+/* The hero/title italic emphasis: white halo + heavy gray-ghost chroma, combined.
+   Used for <em> inside hero and display titles. Matches index.html h1.hero em. */
+@utility text-hero-em {
+  text-shadow:
+    0 0 32px rgba(255, 255, 255, 0.5),
+    4px 0 0 rgba(220, 220, 225, 0.7),
+    -4px 0 0 rgba(120, 120, 128, 0.6);
+}
+
+@utility text-display-em {
+  text-shadow:
+    0 0 24px rgba(255, 255, 255, 0.45),
+    3px 0 0 rgba(220, 220, 225, 0.55),
+    -3px 0 0 rgba(120, 120, 128, 0.45);
+}
+
+@utility text-logotype-em {
+  text-shadow:
+    0 0 20px rgba(255, 255, 255, 0.5),
+    2px 0 0 rgba(220, 220, 225, 0.55),
+    -2px 0 0 rgba(120, 120, 128, 0.45);
+}
+
+@utility text-section-n {
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+@utility text-stat-n {
+  text-shadow: 0 0 14px rgba(255, 255, 255, 0.35);
+}
+
+/* ==========================================================================
+   Keyframes
+   ========================================================================== */
+
+@keyframes st-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
