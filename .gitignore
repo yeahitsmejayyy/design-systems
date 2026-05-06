@@ -34,3 +34,7 @@ bun-debug.log*
 *.local
 .env
 .env.local
+
+# Children
+terminal/_archive
+video-game/_archive
