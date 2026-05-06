@@ -2,7 +2,7 @@
 
 ![Design Systems cover](./cover.png)
 
-A growing index of design systems — each one a complete React + Tailwind v4 + Vite app. Five themes today, more shipping in time. This repo is the long-term home for whatever I build next.
+A growing index of design systems — each one a complete React + Tailwind v4 + Vite app. Six themes today, more shipping in time. This repo is the long-term home for whatever I build next.
 
 ## Why this exists
 
@@ -23,6 +23,7 @@ I like design systems. I rotate through them the way I rotate VS Code themes —
 | **Neo Terminal** | Pure black + matrix green. Phosphor mainframe. | [`terminal/neo/`](./terminal/neo) |
 | **Neon Terminal** | Magenta + cyan on deep purple. Loud and lit. | [`terminal/neon/`](./terminal/neon) |
 | **Classic Arcade** | Coin-op cabinet. Press Start 2P + five-neon palette. | [`video-game/classic-arcade/`](./video-game/classic-arcade) |
+| **SNES Mario** | Lavender overworld. Cream-on-brick plaque. Daytime sibling to Classic Arcade. | [`video-game/snes-mario/`](./video-game/snes-mario) |
 | _next_ | _shipping in time._ | _—_ |
 
 Each theme directory is a self-contained Vite app. The home route (`/`) is the design-system showcase; every section has its own `/colors/...`, `/type/...`, `/components/...` route so you can see each token and primitive in isolation.
@@ -66,7 +67,7 @@ These are starting points, not finished products. Swap colors, retune the type s
 
 This is an ongoing project — themes get added when I feel like building one. Loose backlog:
 
-- [ ] Mario (platformer joy, sky blue + brick red)
+- [x] SNES Mario (platformer joy, sky blue + brick red)
 - [ ] Zelda (parchment overworld, hyrulean greens)
 - [ ] A broader Nintendo sibling
 - [ ] More terminal variants as moods strike
