@@ -1,6 +1,10 @@
 import { PreviewFrame } from '@/components/mario/preview-frame'
 import { Badge } from '@/components/ui/badge'
 
+function Dot() {
+  return <span className="inline-block w-[6px] h-[6px] rounded-full bg-current mr-[10px]" />
+}
+
 export function ComponentsBadges() {
   return (
     <PreviewFrame title="COMPONENTS / BADGES" bg="paper">
@@ -9,11 +13,11 @@ export function ComponentsBadges() {
           <span className="font-pixel text-[9px] text-mute min-w-[110px]">
             STATUS
           </span>
-          <Badge variant="pipe">● 1UP</Badge>
-          <Badge variant="coin">● COIN</Badge>
-          <Badge variant="fire">● FIRE</Badge>
-          <Badge variant="red">● HIT</Badge>
-          <Badge variant="mute">● IDLE</Badge>
+          <Badge variant="pipe"><Dot /> 1UP</Badge>
+          <Badge variant="coin"><Dot /> COIN</Badge>
+          <Badge variant="fire"><Dot /> FIRE</Badge>
+          <Badge variant="red"><Dot /> HIT</Badge>
+          <Badge variant="mute"><Dot /> IDLE</Badge>
         </div>
 
         <div className="flex gap-2 items-center flex-wrap">
@@ -30,8 +34,10 @@ export function ComponentsBadges() {
             POWER-UP
           </span>
           <div className="inline-flex items-center gap-2 px-[14px] py-[10px] bg-coin border-4 border-outline shadow-pixel">
-            <span className="font-pixel text-[16px] text-ink animate-bounce-mario inline-block">
-              ★
+            <span className="inline-block -translate-y-[3px]">
+              <span className="font-pixel text-[16px] text-ink animate-pulse-mario inline-block leading-none">
+                ★
+              </span>
             </span>
             <span className="font-pixel text-[10px] text-ink">
               SUPER STAR UNLOCKED

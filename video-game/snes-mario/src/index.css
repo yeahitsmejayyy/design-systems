@@ -101,6 +101,7 @@
   --animate-bounce-mario: m-bounce 0.8s ease-in-out infinite;
   --animate-coin-spin: m-coin-spin 1.2s steps(4) infinite;
   --animate-block-bump: m-block-bump 1.6s ease-in-out infinite;
+  --animate-pulse-mario: m-pulse 1.2s ease-in-out infinite;
   --animate-flash: m-flash 1s steps(2) infinite;
   --animate-flash-fast: m-flash 0.6s steps(2) infinite;
 }
@@ -356,5 +357,15 @@
   50%,
   100% {
     opacity: 0.4;
+  }
+}
+
+@keyframes m-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.35);
   }
 }
